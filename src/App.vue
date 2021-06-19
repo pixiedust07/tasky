@@ -1,21 +1,37 @@
 <template>
   <div class="container">
     <Header title="Task Tracker App"/>
+    <Tasks @toggle-reminder="toggleReminder" @remove-task="removeTask" :Tasks="tasks"/>
+    <!-- Here the Task is the 'PropName' and tasks is the array returned by the data method -->
   </div>
 </template>
 
 <script>
 import Header from './components/Header'
+import Tasks from './components/Tasks'
 
 
 export default {
   name: 'App',
   components: {
     Header,
+    Tasks,
   },
   data() {
     return {
       tasks: [],
+    }
+  },
+  methods: {
+    // how did id have access to the tasks without passing it on calling
+    // because it's passed on emiting from the Tasks component 
+    removeTask(id) {
+      if(confirm('Are you sure? '))
+        this.tasks = this.tasks.filter(task => task.id !== id)
+    },
+    toggleReminder(id) {
+      this.tasks = this.tasks.map(task => task.id === id ? { ...task, remind: !task.remind } : task)
+      // here the spread operator points to the initial values of the object upto the remind key
     }
   },
   created() {
@@ -35,12 +51,11 @@ export default {
       },
 
       {
-        id: 1, 
+        id: 3, 
         text: 'Visit Park', 
         day: '3rd july 2021',
         remind: false,
-      },
-
+      }
     ]
   }
 }
