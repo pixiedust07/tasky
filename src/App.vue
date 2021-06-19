@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <Header title="Task Tracker App"/>
+    <NewTask @new-task="saveNewTask"/>
     <Tasks @toggle-reminder="toggleReminder" @remove-task="removeTask" :Tasks="tasks"/>
     <!-- Here the Task is the 'PropName' and tasks is the array returned by the data method -->
   </div>
@@ -9,6 +10,7 @@
 <script>
 import Header from './components/Header'
 import Tasks from './components/Tasks'
+import NewTask from './components/NewTask'
 
 
 export default {
@@ -16,6 +18,7 @@ export default {
   components: {
     Header,
     Tasks,
+    NewTask,
   },
   data() {
     return {
@@ -23,6 +26,10 @@ export default {
     }
   },
   methods: {
+    saveNewTask(newTask) {
+      // here we redefine our existing tasks array by selecting all previous objects and appending new along with them.
+      this.tasks = [...this.tasks, newTask ]
+    },
     // how did id have access to the tasks without passing it on calling
     // because it's passed on emiting from the Tasks component 
     removeTask(id) {
@@ -79,6 +86,7 @@ body {
   border: 1px solid steelblue;
   padding: 30px;
   border-radius: 5px;
+  /* background-color: #222; */
 }
 .btn {
   display: inline-block;
