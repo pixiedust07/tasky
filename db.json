@@ -4,13 +4,13 @@
       "id": "2",
       "text": "Meeting with boss",
       "day": "March 6th at 1:30pm",
-      "remind": false
+      "remind": true
     },
     {
-      "id": 2706,
       "text": "Take out trash",
       "day": "20th march at 2pm",
-      "remind": true
+      "remind": true,
+      "id": "gnwwuwO"
     }
   ]
 }

@@ -32,8 +32,8 @@ export default {
         onSubmit(event) {
             event.preventDefault();
             if(!this.task || !this.dateTime){
-                    console.log('The computer needs info');
-                }
+                    alert('The computer needs info');
+            }
 
             const newTask = {
                 // id: Math.floor(Math.random() * 100000),
