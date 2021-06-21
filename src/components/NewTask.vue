@@ -57,6 +57,7 @@ export default {
 <style scoped>
 .addTask {
     padding: 10px;
+    transition: .4s ease-in;
 }
 
 .addTask .form-control {

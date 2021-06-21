@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <Header title="Task Tracker App"/>
-    <NewTask @new-task="saveNewTask"/>
+    <Header @toggle-form="toggleForm" title="Task Tracker App" :formTogglerStatus="showAddTask"/>
+    <div v-show="showAddTask" class="task-form">
+      <NewTask @new-task="saveNewTask"/>
+    </div>
     <Tasks @toggle-reminder="toggleReminder" @remove-task="removeTask" :Tasks="tasks"/>
     <!-- Here the Task is the 'PropName' and tasks is the array returned by the data method -->
   </div>
@@ -23,11 +25,15 @@ export default {
   data() {
     return {
       tasks: [],
+      showAddTask: false, 
     }
   },
   methods: {
+    toggleForm() {
+      this.showAddTask = !this.showAddTask
+    },
     saveNewTask(newTask) {
-      // here we redefine our existing tasks array by selecting all previous objects and appending new along with them.
+      // here we redefine our existing tasks array by selecting all previous objects and appending new task along with them.
       this.tasks = [...this.tasks, newTask ]
     },
     // how did id have access to the tasks without passing it on calling

@@ -1,7 +1,7 @@
 <template>
     <header>
         <h1>{{ title }}</h1>
-        <Button btnTitle="Add new task" color="#134e4e"/>
+        <Button @btn-click="$emit('toggle-form')" :btnTitle="formTogglerStatus ? 'Close' : 'Add new task' " :color="formTogglerStatus ? 'red' : '#134e4e' "/>
     </header>
 </template>
 
@@ -14,6 +14,9 @@ export default {
         title: {
             type: String,
             default: "Task Lister App",
+        },
+        formTogglerStatus: {
+            type: Boolean, 
         },
     },
     components: {

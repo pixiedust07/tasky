@@ -11,7 +11,7 @@ export default {
     },
     methods: {
         addTask() {
-            console.log('Task Added successfully');
+            this.$emit('btn-click')
         }
     }
 }
