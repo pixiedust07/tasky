@@ -32,44 +32,62 @@ export default {
     toggleForm() {
       this.showAddTask = !this.showAddTask
     },
-    saveNewTask(newTask) {
+    async saveNewTask(newTask) {
+      const res = await fetch('api/tasks/', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(newTask)
+      })
+
+      const data = res.json()
       // here we redefine our existing tasks array by selecting all previous objects and appending new task along with them.
-      this.tasks = [...this.tasks, newTask ]
+      this.tasks = [...this.tasks, data ]
     },
     // how did id have access to the tasks without passing it on calling
     // because it's passed on emiting from the Tasks component 
-    removeTask(id) {
-      if(confirm('Are you sure? '))
-        this.tasks = this.tasks.filter(task => task.id !== id)
+    async removeTask(id) {
+      if(confirm('Are you sure ?')) {
+        const res = await fetch(`api/tasks/${id}`, {
+        method: 'DELETE',
+      })
+
+        res.status === 200 ? (this.tasks = this.tasks.filter(task => task.id !== id)) : alert('Error on deleting task')
+      }
+
+      
     },
-    toggleReminder(id) {
-      this.tasks = this.tasks.map(task => task.id === id ? { ...task, remind: !task.remind } : task)
+    async toggleReminder(id) {
+      const taskToToggleReminder = await this.fetchTask(id)
+      const updateReminder = {...taskToToggleReminder, remind: !taskToToggleReminder.remind}
+
+      const res = await fetch(`api/tasks/${id}`,{
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(updateReminder)
+      })
+
+      const data = await res.json()
+      console.log(data);
+      this.tasks = this.tasks.map(task => task.id === id ? { ...task, remind: data.remind} : task)
       // here the spread operator points to the initial values of the object upto the remind key
+    },
+    async fetchTasks() {
+      const res = await fetch('api/tasks')
+      const data = await res.json()
+      return data
+    },
+    async fetchTask(taskId) {
+      const res = await fetch(`api/tasks/${taskId}`)
+      const data = await res.json()
+      return data
     }
   },
-  created() {
-    this.tasks = [
-      {
-        id: 1, 
-        text: 'Take out trash', 
-        day: '21st march 2021',
-        remind: true,
-      },
-      
-      {
-        id: 2, 
-        text: 'Appointment at clinic', 
-        day: '21st june 2021',
-        remind: true,
-      },
-
-      {
-        id: 3, 
-        text: 'Visit Park', 
-        day: '3rd july 2021',
-        remind: false,
-      }
-    ]
+  async created() {
+    this.tasks = await this.fetchTasks()
   }
 }
 </script>
